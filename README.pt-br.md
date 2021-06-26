@@ -85,4 +85,4 @@ O layout deste projeto está disponível neste [link](https://www.figma.com/file
 
 # 📝 Licença
 
-Este projeto está sob a licença MIT. Veja [LICENSE](LICENSE.md).
+Este projeto está sob a licença MIT. Veja [LICENSE](LICENSE).
