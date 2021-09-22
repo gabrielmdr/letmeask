@@ -20,7 +20,8 @@ export function Question({
   content,
   isAnswered,
   isHighlighted,
-  children }: Props) {
+  children
+}: Props) {
   return (
     <div className={
       cx(

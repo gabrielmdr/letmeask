@@ -14,6 +14,7 @@ import deleteImg from '../assets/images/delete.svg';
 import logoImg from '../assets/images/logo.svg';
 
 import '../styles/room.scss';
+import { useTranslation } from 'react-i18next';
 
 type Params = {
   id: string
@@ -22,6 +23,7 @@ type Params = {
 export function AdminRoom() {
   const history = useHistory();
   const params = useParams<Params>();
+  const { t } = useTranslation();
   const roomId = params.id;
   const { questions, title } = useRoom(roomId);
 
@@ -34,7 +36,7 @@ export function AdminRoom() {
   }
 
   async function handleDeleteQuestion(questionId: string) {
-    if (window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
+    if (window.confirm(t('deleteQuestionPrompt'))) {
       await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
     }
   }
@@ -58,14 +60,14 @@ export function AdminRoom() {
           <img src={logoImg} alt="Letmeask" />
           <div>
             <RoomCode code={roomId} />
-            <Button isOutlined onClick={handleEndRoom}>Encerrar sala</Button>
+            <Button isOutlined onClick={handleEndRoom}>{t('endRoom')}</Button>
           </div>
         </div>
       </header>
       <main>
         <div className="room-title">
-          <h1>Sala {title}</h1>
-          { questions.length > 0 && <span>{questions.length} pergunta(s)</span> }
+          <h1>{title}</h1>
+          { questions.length > 0 && <span>{questions.length} {t('questions')}</span> }
         </div>
 
         <div className="question-list">
@@ -86,13 +88,13 @@ export function AdminRoom() {
                           onClick={() => handleCheckQuestionAsAnswered(question.id)}
                           type="button"
                         >
-                          <img src={checkImg} alt="Marcar pergunta como respondida" />
+                          <img src={checkImg} alt={t('markAsAnswered')} />
                         </button>
                         <button
                           onClick={() => handleHighlightQuestion(question.id)}
                           type="button"
                         >
-                          <img src={answerImg} alt="Dar destaque à pergunta" />
+                          <img src={answerImg} alt={t('highlightQuestion')} />
                         </button>
                       </>
                     )
@@ -101,7 +103,7 @@ export function AdminRoom() {
                     onClick={() => handleDeleteQuestion(question.id)}
                     type="button"
                   >
-                    <img src={deleteImg} alt="Remover pergunta" />
+                    <img src={deleteImg} alt={t('deleteQuestion')} />
                   </button>
                 </Question>
               );

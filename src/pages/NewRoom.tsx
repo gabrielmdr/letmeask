@@ -3,15 +3,17 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { Button } from '../components/Button';
 
-import illustrationImg from '../assets/images/illustration.svg';
 import logoImg from '../assets/images/logo.svg';
 
 import '../styles/auth.scss';
 import { database } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
+import { Title } from '../components/Title';
+import { useTranslation } from 'react-i18next';
 
 export function NewRoom() {
   const history = useHistory();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [newRoom, setNewRoom] = useState('');
   
@@ -32,27 +34,23 @@ export function NewRoom() {
   
   return (
     <div id="page-auth">
-      <aside>
-        <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
-        <strong>Crie salas de Q&amp;A ao vivo</strong>
-        <p>Tire as dúvidas da sua audiência em tempo real</p>
-      </aside>
+      <Title />
       <main>
         <div className="main-content">
           <img src={logoImg} alt="Letmeask" />
-          <h2>Criar uma nova sala</h2>
+          <h2>{t('createNewRoom')}</h2>
           <form onSubmit={handleCreateRoom}>
             <input
               onChange={event => setNewRoom(event.target.value)}
-              placeholder="Nome da sala"
+              placeholder={t('roomName')}
               type="text"
               value={newRoom}
             />
             <Button type="submit">
-              Criar sala
+              {t('createRoom')}
             </Button>
           </form>
-          <p>Quer entrar em uma sala existente? <Link to="/">Clique aqui</Link></p>
+          <p>{t('wantToJoinExistingRoom')} <Link to="/">{t('clickHere')}</Link></p>
         </div>
       </main>
     </div>

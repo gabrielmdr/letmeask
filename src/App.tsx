@@ -5,10 +5,12 @@ import { NewRoom } from "./pages/NewRoom";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { Room } from "./pages/Room";
 import { AdminRoom } from "./pages/AdminRoom";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <BrowserRouter>
+      <Toaster />
       <AuthContextProvider>
         <Switch>
           <Route path="/" component={Home} exact />

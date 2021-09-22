@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import logoImg from '../assets/images/logo.svg';
 import { Button } from '../components/Button';
@@ -15,6 +16,7 @@ type Params = {
 
 export function Room() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const params = useParams<Params>();
   const [newQuestion, setNewQuestion] = useState('');
   const roomId = params.id;
@@ -65,14 +67,14 @@ export function Room() {
       </header>
       <main>
         <div className="room-title">
-          <h1>Sala {title}</h1>
-          { questions.length > 0 && <span>{questions.length} pergunta(s)</span> }
+          <h1>{title}</h1>
+          { questions.length > 0 && <span>{questions.length} {t('questions')}</span> }
         </div>
 
         <form onSubmit={handleSendQuestion}>
           <textarea
             onChange={event => setNewQuestion(event.target.value)}
-            placeholder="O que você quer perguntar?"
+            placeholder={t('whatDoYouWantToAsk')}
             value={newQuestion}
           />
 
@@ -83,9 +85,9 @@ export function Room() {
                 <span>{user.name}</span>
               </div>
             ) : (
-              <span>Para enviar uma pergunta <button>faça seu login</button>.</span>
+              <span>{t('toSendQuestion')} <button>{t('doLogin')}</button>.</span>
             ) }
-            <Button disabled={!user} type="submit">Enviar pergunta</Button>
+            <Button disabled={!user} type="submit">{t('sendQuestion')}</Button>
           </div>
         </form>
 
@@ -103,7 +105,7 @@ export function Room() {
                   {
                     !question.isAnswered && (
                       <button
-                        aria-label="Marcar como gostei"
+                        aria-label={t('like')}
                         className={`like-button ${question.likeId ? 'liked' : ''}`}
                         onClick={() => handleLikeQuestion(question.id, question.likeId)}
                         type="button"
