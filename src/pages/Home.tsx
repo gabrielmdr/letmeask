@@ -2,16 +2,18 @@ import { useHistory } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { useAuth } from '../hooks/useAuth';
 
-import illustrationImg from '../assets/images/illustration.svg';
 import logoImg from '../assets/images/logo.svg';
 import googleIconImg from '../assets/images/google-icon.svg';
 
 import '../styles/auth.scss';
 import { FormEvent, useState } from 'react';
 import { database } from '../services/firebase';
+import { Title } from '../components/Title';
+import { useTranslation } from 'react-i18next';
 
 export function Home() {
   const history = useHistory();
+  const { t } = useTranslation();
   const { signInWithGoogle, user } = useAuth();
   const [roomCode, setRoomCode] = useState('');
 
@@ -32,12 +34,12 @@ export function Home() {
     const roomRef = await database.ref(`rooms/${roomCode}`).get();
 
     if (!roomRef.exists()) {
-      alert('Room does not exist.');
+      alert(t('roomDoesNotExist'));
       return;
     }
 
     if (roomRef.val().endedAt) {
-      alert('Room already closed.');
+      alert(t('roomAlreadyClosed'));
       return;
     }
 
@@ -46,28 +48,24 @@ export function Home() {
   
   return (
     <div id="page-auth">
-      <aside>
-        <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
-        <strong>Crie salas de Q&amp;A ao vivo</strong>
-        <p>Tire as dúvidas da sua audiência em tempo real</p>
-      </aside>
+      <Title />
       <main>
         <div className="main-content">
           <img src={logoImg} alt="Letmeask" />
           <button className="create-room" onClick={handleCreateRoom}>
-            <img src={googleIconImg} alt="Logo do Google" />
-            Crie sua sala com o Google
+            <img src={googleIconImg} alt={t('googleLogo')} />
+            {t('createRoomWithGoogle')}
           </button>
-          <div className="separator">Ou entre em uma sala</div>
+          <div className="separator">{t('orEnterARoom')}</div>
           <form onSubmit={handleJoinRoom}>
             <input
               onChange={event => setRoomCode(event.target.value)}
-              placeholder="Digite o código da sala"
+              placeholder={t('typeRoomCode')}
               type="text"
               value={roomCode}
             />
             <Button type="submit">
-              Entrar na sala
+              {t('enterRoom')}
             </Button>
           </form>
         </div>
